@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.8)
-project(tumbler-fcstd-thumbnailer)
+project(tumbler-dir-thumbnailer)
 
 find_package(PkgConfig REQUIRED)
 
 # Find the required libraries using pkg-config
-# We need tumbler-1, glib, and libgsf-1
-pkg_check_modules(DEPS REQUIRED tumbler-1 glib-2.0 gdk-pixbuf-2.0 libgsf-1)
+# We need tumbler-1, glib, gdk-pixbuf, and gio
+pkg_check_modules(DEPS REQUIRED tumbler-1 glib-2.0 gdk-pixbuf-2.0 gio-2.0)
 
 # Add the include directories found by pkg-config
 include_directories(
@@ -19,17 +19,16 @@ link_directories(
 )
 
 # Define the shared library
-add_library(tumbler-fcstd-thumbnailer SHARED
-    fcstd-thumbnailer.c
-    fcstd-thumbnailer-provider.c
-    fcstd-thumbnailer-plugin.c
+add_library(tumbler-dir-thumbnailer SHARED
+    dir-thumbnailer.c
+    dir-thumbnailer-provider.c
+    dir-thumbnailer-plugin.c
 )
 
 # Explicitly link the libraries
-# This ensures the symbol gsf_input_mmap_new is found
-target_link_libraries(tumbler-fcstd-thumbnailer
+target_link_libraries(tumbler-dir-thumbnailer
     ${DEPS_LIBRARIES}
 )
 
-# Remove the 'lib' prefix so the output is 'tumbler-fcstd-thumbnailer.so'
-set_target_properties(tumbler-fcstd-thumbnailer PROPERTIES PREFIX "")
+# Remove the 'lib' prefix so the output is 'tumbler-dir-thumbnailer.so'
+set_target_properties(tumbler-dir-thumbnailer PROPERTIES PREFIX "")
