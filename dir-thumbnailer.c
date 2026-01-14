@@ -92,7 +92,7 @@ find_best_thumbnail_image (const gchar *thumbnails_dir, gint requested_size) {
 
   /* Scan all files in .thumbnails directory */
   while ((filename = g_dir_read_name (dir)) != NULL) {
-    gchar *basename = g_path_get_basename (filename);
+    gchar *basename = g_strdup (filename);
     gchar *dot = strrchr (basename, '.');
     
     if (dot) {

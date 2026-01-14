@@ -8,9 +8,9 @@ source image when rendering the thumbnail at size 32.
 
 The plugin uses the following logic for selecting images:
 - Images should be named numerically (e.g., 16.png, 32.svg, 64.png, 128.jpg)
-- The smallest numbered image in the directory is used for any rendering at that size or smaller
-- The largest numbered image is used for any rendering at that size or larger
-- Any intermediate image sizes are used for rendering at that size or larger up until the next specified image
+- For thumbnail sizes at or below an available image size: uses the largest available image that fits
+- For thumbnail sizes above all available images: uses the largest available image
+- For thumbnail sizes between available images: uses the next larger available image
 - Images not named numerically are ignored
 
 The goal of the plugin is to enable using different folder thumbnail styles at different rendering sizes, 
