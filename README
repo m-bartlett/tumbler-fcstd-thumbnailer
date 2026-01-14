@@ -1,8 +1,24 @@
-This is a plugin for tumbler (the thumbnaililing system used by Thunar and Marlin), that allows
-it to produce thumbnails for FreeCAD's .fcstd files.
+This is a plugin for tumbler (the thumbnailing system used by Thunar and other file managers), that allows
+it to produce thumbnails for directories/folders based on custom images.
 
-.fcstd files behave exactly like .odf files (from openoffice/libreoffice), they are actually
-a .zip file containing a .png thumbnail image (thumbnails/Thumbnail.png). This plugin is copied/adapted the odf plugin
+The plugin checks if a directory contains a ".thumbnails" hidden subdirectory which may contain one or many 
+image files (PNG, JPG, SVG, etc.) which depict what the directory's thumbnail should be at different 
+rendering sizes in the file manager. For example, an image at .thumbnails/32.svg would be used as the 
+source image when rendering the thumbnail at size 32.
 
-The .so plugin must be copied manually in your tumbler plugins dir (usr/lib/x86xxx/tumbler-1/plugins) after
-being built, since I still couldn't make install targets in the CMake file work...
+The plugin uses the following logic for selecting images:
+- Images should be named numerically (e.g., 16.png, 32.svg, 64.png, 128.jpg)
+- For thumbnail sizes at or below an available image size: uses the largest available image that fits
+- For thumbnail sizes above all available images: uses the largest available image
+- For thumbnail sizes between available images: uses the next larger available image
+- Images not named numerically are ignored
+
+The goal of the plugin is to enable using different folder thumbnail styles at different rendering sizes, 
+such as using more detailed thumbnails at larger icon sizes or more symbolic/simpler thumbnails at smaller 
+icon sizes.
+
+The plugin will remove any cached thumbnails for a directory if it is found to no longer have a .thumbnails 
+subdirectory.
+
+The .so plugin must be copied manually to your tumbler plugins directory (e.g., /usr/lib/x86_64-linux-gnu/tumbler-1/plugins 
+or /usr/lib/tumbler-1/plugins) after being built. You can use the included install.sh script for this.
