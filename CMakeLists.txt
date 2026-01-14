@@ -1,16 +1,35 @@
-cmake_minimum_required ( VERSION 2.6 )
-project ( tumbler-fcstd-thumbnailer )
+cmake_minimum_required(VERSION 2.8)
+project(tumbler-fcstd-thumbnailer)
 
-INCLUDE( FindPkgConfig )
-FIND_PACKAGE( GTK2 REQUIRED )
-ADD_DEFINITIONS("`pkg-config --cflags --libs gtk+-2.0`")
-ADD_DEFINITIONS("`pkg-config --cflags --libs tumbler-1`")
-pkg_check_modules(PKG REQUIRED libgsf-1)
+find_package(PkgConfig REQUIRED)
 
-include_directories( ${PKG_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR} )
-link_directories( ${PKG_LIBRARY_DIRS} )
-message ("found libs: ${PKG_INCLUDE_DIRS}")
+# Find the required libraries using pkg-config
+# We need tumbler-1, glib, and libgsf-1
+pkg_check_modules(DEPS REQUIRED tumbler-1 glib-2.0 gdk-pixbuf-2.0 libgsf-1)
 
-add_library( tumbler-fcstd-thumbnailer SHARED fcstd-thumbnailer.c fcstd-thumbnailer-provider.c fcstd-thumbnailer-plugin.c )
+# Add the include directories found by pkg-config
+include_directories(
+    ${PROJECT_SOURCE_DIR}
+    ${DEPS_INCLUDE_DIRS}
+)
 
+# Add the library directories found by pkg-config
+link_directories(
+    ${DEPS_LIBRARY_DIRS}
+)
+
+# Define the shared library
+add_library(tumbler-fcstd-thumbnailer SHARED
+    fcstd-thumbnailer.c
+    fcstd-thumbnailer-provider.c
+    fcstd-thumbnailer-plugin.c
+)
+
+# Explicitly link the libraries
+# This ensures the symbol gsf_input_mmap_new is found
+target_link_libraries(tumbler-fcstd-thumbnailer
+    ${DEPS_LIBRARIES}
+)
+
+# Remove the 'lib' prefix so the output is 'tumbler-fcstd-thumbnailer.so'
 set_target_properties(tumbler-fcstd-thumbnailer PROPERTIES PREFIX "")

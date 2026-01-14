@@ -27,6 +27,8 @@
 #include <glib/gi18n.h>
 #include <glib-object.h>
 
+#include <gsf/gsf.h>
+
 #include <tumbler/tumbler.h>
 
 #include <fcstd-thumbnailer-provider.h>
@@ -64,6 +66,8 @@ tumbler_plugin_initialize (TumblerProviderPlugin *plugin)
   g_message (_("Initializing the Tumbler FCSTD Thumbnailer plugin"));
 #endif
 
+  gsf_init ();
+
   /* register the types provided by this plugin */
   fcstd_thumbnailer_register (plugin);
   fcstd_thumbnailer_provider_register (plugin);
@@ -80,6 +84,8 @@ tumbler_plugin_shutdown (void)
 #ifdef DEBUG
   g_message (_("Shutting down the Tumbler FCSTD Thumbnailer plugin"));
 #endif
+
+  gsf_shutdown ();
 }
 
 

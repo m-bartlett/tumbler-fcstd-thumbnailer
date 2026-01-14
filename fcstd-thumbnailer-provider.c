@@ -56,7 +56,7 @@ G_DEFINE_DYNAMIC_TYPE_EXTENDED (FcstdThumbnailerProvider,
                                 fcstd_thumbnailer_provider,
                                 G_TYPE_OBJECT,
                                 0,
-                                TUMBLER_ADD_INTERFACE (TUMBLER_TYPE_THUMBNAILER_PROVIDER,
+                                G_IMPLEMENT_INTERFACE_DYNAMIC (TUMBLER_TYPE_THUMBNAILER_PROVIDER,
                                                        fcstd_thumbnailer_provider_thumbnailer_provider_init));
 
 
